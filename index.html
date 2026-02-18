@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para Arheny 🌌</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -10,11 +10,18 @@
         /* --- Configuración del Fondo y Universo --- */
         body {
             background: radial-gradient(circle at center bottom, #1b2735 0%, #090a0f 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Altura mínima para cubrir toda la pantalla */
+            /* Permitir scroll natural en el cuerpo para móviles */
+            overflow-x: hidden;
+            overflow-y: auto; 
             font-family: 'Montserrat', sans-serif;
             color: #e2e8f0;
             position: relative;
+            /* Flexbox para centrar contenido si es corto, pero permitir estirar si es largo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Utilidades de visibilidad */
@@ -22,37 +29,23 @@
             display: none !important;
         }
 
-        .fade-in {
-            animation: fadeIn 1.5s ease-out forwards;
-        }
-
-        /* Contenedor escrolable para móviles */
-        .content-wrapper {
-            height: 100%;
-            overflow-y: auto;
+        /* --- Estrellas (Fondo Fijo) --- */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            position: relative;
-            z-index: 10;
-            padding: 2rem 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        @media (max-height: 800px) {
-            .content-wrapper {
-                align-items: flex-start;
-            }
+            height: 100%;
+            z-index: -1; /* Detrás del contenido */
+            pointer-events: none;
         }
 
-        /* --- Estrellas --- */
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
             animation: twinkle var(--duration) ease-in-out infinite;
             opacity: var(--opacity);
-            z-index: 0;
         }
 
         @keyframes twinkle {
@@ -62,7 +55,8 @@
 
         /* --- Estrella Fugaz --- */
         .shooting-star {
-            position: absolute;
+            position: fixed; /* Fijo para que no se mueva con el scroll */
+            z-index: -1;
             top: 50%;
             left: 50%;
             width: 4px;
@@ -72,7 +66,6 @@
             box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
             animation: shoot 5s linear infinite;
             opacity: 0;
-            z-index: 1;
         }
         
         .shooting-star::before {
@@ -93,11 +86,12 @@
 
         /* --- Tarjeta de Cristal --- */
         .glass-card {
-            background: rgba(20, 30, 48, 0.7);
+            background: rgba(20, 30, 48, 0.75); /* Un poco más oscuro para mejor lectura */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
         }
 
         .card-enter {
@@ -109,7 +103,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Tipografía y Estilos de Texto --- */
+        /* --- Tipografía --- */
         h1 {
             font-family: 'Dancing Script', cursive;
             text-shadow: 0 0 10px rgba(147, 197, 253, 0.5);
@@ -118,7 +112,7 @@
         p {
             margin-bottom: 1.2rem;
             line-height: 1.8;
-            text-align: justify;
+            text-align: justify; /* Justificado se ve bien, pero en móvil a veces left es mejor, dejamos justify por ahora */
         }
 
         /* Resaltados */
@@ -127,25 +121,15 @@
             font-weight: 500;
         }
 
-        /* Bloque de Cita final */
+        /* Bloque de Cita */
         .quote-block {
             background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #fbbf24; /* Color dorado/luz */
-            padding: 1.5rem;
+            border-left: 3px solid #fbbf24;
+            padding: 1rem; /* Padding reducido para móvil */
             border-radius: 0 8px 8px 0;
             font-style: italic;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             position: relative;
-        }
-
-        .quote-block::before {
-            content: '"';
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            font-size: 3rem;
-            color: rgba(251, 191, 36, 0.3);
-            font-family: serif;
         }
 
         .heart-beat {
@@ -168,6 +152,7 @@
             text-align: center;
             letter-spacing: 0.2em;
             transition: all 0.3s ease;
+            -webkit-appearance: none; /* Eliminar estilos nativos de iOS */
         }
         .login-input:focus {
             outline: none;
@@ -175,13 +160,9 @@
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 15px rgba(147, 197, 253, 0.3);
         }
-        .login-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: normal;
-        }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-0">
 
     <!-- Fondo de estrellas dinámico -->
     <div id="stars-container"></div>
@@ -192,36 +173,41 @@
     <div class="shooting-star" style="top: 40%; left: 10%; animation-delay: 15s;"></div>
 
     <!-- PANTALLA DE LOGIN -->
-    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="glass-card p-10 rounded-2xl text-center max-w-sm w-full card-enter">
-            <h2 class="text-3xl font-light mb-6 text-blue-200" style="font-family: 'Dancing Script', cursive;">Bienvenida</h2>
-            <p class="text-sm text-gray-400 mb-6">Ingresa la clave secreta para abrir este mensaje</p>
+    <!-- z-50 y position fixed aseguran que siempre esté encima y centrada -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div class="glass-card p-8 rounded-2xl text-center max-w-sm w-full card-enter mx-auto">
+            <h2 class="text-4xl font-light mb-6 text-blue-200" style="font-family: 'Dancing Script', cursive;">Bienvenida</h2>
+            <p class="text-sm text-gray-300 mb-6">Ingresa la clave secreta</p>
             
-            <input type="password" id="password-input" maxlength="4" placeholder="****" 
-                   class="login-input w-full py-3 px-4 rounded-lg text-2xl mb-4 font-mono">
+            <!-- type="tel" a veces ayuda a traer teclado numérico en móviles, pero password oculta los caracteres -->
+            <input type="password" inputmode="numeric" id="password-input" maxlength="4" placeholder="****" 
+                   class="login-input w-full py-3 px-4 rounded-lg text-2xl mb-6 font-mono">
             
             <button onclick="checkPassword()" 
-                    class="w-full bg-blue-500/80 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg shadow-blue-500/30">
+                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-lg transition-colors duration-300 shadow-lg shadow-blue-500/30 touch-manipulation">
                 Abrir Carta
             </button>
             
-            <p id="error-message" class="text-red-400 text-sm mt-4 hidden animate-pulse">
+            <p id="error-message" class="text-red-400 text-sm mt-4 hidden animate-pulse bg-red-900/20 py-1 rounded">
                 Contraseña incorrecta
             </p>
         </div>
     </div>
 
 
-    <!-- CONTENIDO DE LA CARTA (Oculto al inicio) -->
-    <div id="main-content" class="content-wrapper hidden opacity-0 transition-opacity duration-1000">
-        <div class="glass-card w-full max-w-2xl p-8 md:p-12 rounded-xl relative z-20">
+    <!-- CONTENIDO DE LA CARTA -->
+    <!-- max-w-2xl controla el ancho máximo. w-full asegura que use el ancho disponible en móvil -->
+    <!-- my-auto permite centrado vertical si hay espacio, sino scroll -->
+    <div id="main-content" class="w-full max-w-2xl my-auto hidden opacity-0 transition-opacity duration-1000 pb-8">
+        <div class="glass-card p-6 md:p-12 rounded-xl relative z-20">
             
-            <header class="text-center mb-10">
-                <h1 class="text-5xl md:text-6xl text-blue-200 mb-2">Para Arheny 🌌</h1>
-                <p class="text-blue-300 text-sm tracking-[0.2em] uppercase font-light">Mi calma en la tormenta</p>
+            <header class="text-center mb-8">
+                <!-- Título responsivo: text-4xl en móvil, text-6xl en escritorio -->
+                <h1 class="text-4xl md:text-6xl text-blue-200 mb-2">Para Arheny 🌌</h1>
+                <p class="text-blue-300 text-xs md:text-sm tracking-[0.2em] uppercase font-light">Mi calma en la tormenta</p>
             </header>
 
-            <div class="text-gray-100 text-lg font-light leading-relaxed">
+            <div class="text-gray-100 text-base md:text-lg font-light leading-relaxed">
                 <p>
                     <span class="font-medium text-blue-200">Arheny</span>, necesito decirte esto porque lo traigo en el pecho y es la verdad: <span class="highlight">Eres mi calma en medio de la tormenta.</span>
                 </p>
@@ -245,8 +231,8 @@
                 </div>
             </div>
 
-            <footer class="mt-12 text-right border-t border-gray-600/30 pt-6">
-                <p class="font-dancing text-2xl text-blue-100">
+            <footer class="mt-8 text-right border-t border-gray-600/30 pt-6">
+                <p class="font-dancing text-xl md:text-2xl text-blue-100">
                     Con amor,<br>
                     <span class="heart-beat">❤️</span> David
                 </p>
@@ -263,7 +249,8 @@
             const loginScreen = document.getElementById('login-screen');
             const mainContent = document.getElementById('main-content');
             
-            if (input.value === "2235") {
+            // Eliminar espacios por si acaso
+            if (input.value.trim() === "2235") {
                 // Éxito
                 errorMsg.classList.add('hidden');
                 
@@ -275,10 +262,13 @@
                     loginScreen.classList.add('hidden');
                     // Mostrar carta
                     mainContent.classList.remove('hidden');
-                    // Forzar reflow
+                    // Forzar reflow para animación
                     void mainContent.offsetWidth; 
                     mainContent.classList.remove('opacity-0');
                     mainContent.classList.add('card-enter');
+                    
+                    // Asegurar que estamos al principio de la carta
+                    window.scrollTo(0,0);
                 }, 500);
 
             } else {
@@ -290,16 +280,15 @@
         }
 
         // Permitir Enter para enviar
-        document.getElementById('password-input').addEventListener('keypress', function (e) {
+        document.getElementById('password-input').addEventListener('keyup', function (e) {
             if (e.key === 'Enter') {
                 checkPassword();
             }
         });
 
         // --- VISUALES DE FONDO ---
-        // Generar Estrellas
         const starsContainer = document.getElementById('stars-container');
-        const starCount = 200; 
+        const starCount = 150; // Reducido un poco para rendimiento móvil
 
         for (let i = 0; i < starCount; i++) {
             const star = document.createElement('div');
