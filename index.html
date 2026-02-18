@@ -1,56 +1,324 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Para mi Osita</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: url('https://starwalk.space/gallery/images/what-is-space/1920x1080.jpg') center center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Georgia', serif;
-      color: #fff;
-      text-shadow: 0 0 8px rgba(0,0,0,0.7);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Arheny 🌌</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* --- Configuración del Fondo y Universo --- */
+        body {
+            background: radial-gradient(circle at center bottom, #1b2735 0%, #090a0f 100%);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            color: #e2e8f0;
+            position: relative;
+        }
 
-    .carta {
-      background: rgba(15, 30, 60, 0.75); /* Azul espacial translúcido */
-      padding: 30px;
-      max-width: 650px;
-      border-radius: 12px;
-      line-height: 1.7;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
+        /* Utilidades de visibilidad */
+        .hidden {
+            display: none !important;
+        }
 
-    h1 {
-      text-align: center;
-      font-size: 2.2em;
-      margin-bottom: 20px;
-    }
+        .fade-in {
+            animation: fadeIn 1.5s ease-out forwards;
+        }
 
-    footer {
-      text-align: right;
-      margin-top: 30px;
-      font-size: 1.1em;
-    }
-  </style>
+        /* Contenedor escrolable para móviles */
+        .content-wrapper {
+            height: 100%;
+            overflow-y: auto;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        @media (max-height: 800px) {
+            .content-wrapper {
+                align-items: flex-start;
+            }
+        }
+
+        /* --- Estrellas --- */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: var(--opacity);
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: var(--opacity); transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.8); }
+        }
+
+        /* --- Estrella Fugaz --- */
+        .shooting-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.1), 0 0 0 8px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,1);
+            animation: shoot 5s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255,255,255,1), transparent);
+        }
+
+        @keyframes shoot {
+            0% { transform: rotate(315deg) translateX(0); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: rotate(315deg) translateX(-1500px); opacity: 0; }
+        }
+
+        /* --- Tarjeta de Cristal --- */
+        .glass-card {
+            background: rgba(20, 30, 48, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-enter {
+            animation: floatUp 1s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Tipografía y Estilos de Texto --- */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 0 10px rgba(147, 197, 253, 0.5);
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* Resaltados */
+        .highlight {
+            color: #93c5fd;
+            font-weight: 500;
+        }
+
+        /* Bloque de Cita final */
+        .quote-block {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #fbbf24; /* Color dorado/luz */
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 3rem;
+            color: rgba(251, 191, 36, 0.3);
+            font-family: serif;
+        }
+
+        .heart-beat {
+            display: inline-block;
+            animation: beat 1.5s infinite;
+            color: #ef4444;
+            filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5));
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Estilos Input Login */
+        .login-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+            letter-spacing: 0.2em;
+            transition: all 0.3s ease;
+        }
+        .login-input:focus {
+            outline: none;
+            border-color: #93c5fd;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 15px rgba(147, 197, 253, 0.3);
+        }
+        .login-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: normal;
+        }
+    </style>
 </head>
 <body>
-  <div class="carta">
-    <h1>Para mi Osita 🌌</h1>
-    <p>No sabes lo duro que ha sido para mí todo esto…</p>
-    <p>Me he esforzado por demostrarte que mi amor sigue firme, fuerte y verdadero. Esta semana traté de acercarme a ti con detalles, con flores, con tiempo, con momentos… porque cada instante contigo significa el mundo para mí.</p>
-    <p>El beso que nos dimos el miércoles me hizo sentir que aún había una chispa, una conexión que no se había roto. Me hizo soñar. Pero al día siguiente, cuando me pediste espacio, sentí como si el universo entero se apagara.</p>
-    <p>Me quedé en casa con el corazón roto, lleno de dudas, sintiéndome lejos de ti como nunca antes. No es control lo que siento, es miedo… miedo de perderte, miedo de que ya haya alguien más, miedo de que no vuelva a ser suficiente para ti.</p>
-    <p>Yo aún te amo con todo lo que soy, Osita. Si en algún rincón de tu corazón aún queda algo por mí, solo te pido que no lo ignores.</p>
-    <p>Bajo todas las estrellas del cielo, yo sigo esperando por ti.</p>
-    <footer>Con amor,<br>❤️ David</footer>
-  </div>
+
+    <!-- Fondo de estrellas dinámico -->
+    <div id="stars-container"></div>
+    
+    <!-- Estrellas Fugaces -->
+    <div class="shooting-star" style="top: 15%; left: 80%; animation-delay: 2s;"></div>
+    <div class="shooting-star" style="top: 70%; left: 95%; animation-delay: 8s;"></div>
+    <div class="shooting-star" style="top: 40%; left: 10%; animation-delay: 15s;"></div>
+
+    <!-- PANTALLA DE LOGIN -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="glass-card p-10 rounded-2xl text-center max-w-sm w-full card-enter">
+            <h2 class="text-3xl font-light mb-6 text-blue-200" style="font-family: 'Dancing Script', cursive;">Bienvenida</h2>
+            <p class="text-sm text-gray-400 mb-6">Ingresa la clave secreta para abrir este mensaje</p>
+            
+            <input type="password" id="password-input" maxlength="4" placeholder="****" 
+                   class="login-input w-full py-3 px-4 rounded-lg text-2xl mb-4 font-mono">
+            
+            <button onclick="checkPassword()" 
+                    class="w-full bg-blue-500/80 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg shadow-blue-500/30">
+                Abrir Carta
+            </button>
+            
+            <p id="error-message" class="text-red-400 text-sm mt-4 hidden animate-pulse">
+                Contraseña incorrecta
+            </p>
+        </div>
+    </div>
+
+
+    <!-- CONTENIDO DE LA CARTA (Oculto al inicio) -->
+    <div id="main-content" class="content-wrapper hidden opacity-0 transition-opacity duration-1000">
+        <div class="glass-card w-full max-w-2xl p-8 md:p-12 rounded-xl relative z-20">
+            
+            <header class="text-center mb-10">
+                <h1 class="text-5xl md:text-6xl text-blue-200 mb-2">Para Arheny 🌌</h1>
+                <p class="text-blue-300 text-sm tracking-[0.2em] uppercase font-light">Mi calma en la tormenta</p>
+            </header>
+
+            <div class="text-gray-100 text-lg font-light leading-relaxed">
+                <p>
+                    <span class="font-medium text-blue-200">Arheny</span>, necesito decirte esto porque lo traigo en el pecho y es la verdad: <span class="highlight">Eres mi calma en medio de la tormenta.</span>
+                </p>
+
+                <p>
+                    A veces siento que literalmente <span class="highlight">caíste del cielo</span>, justo en el momento en que mi mundo se sentía más oscuro. Has sido ese faro firme en mi mar abierto que me guio cuando andaba perdido.
+                </p>
+
+                <p>
+                    Más allá de la compañía, tú me cambiaste el 'chip' de la mente. Me hiciste recordar quién soy, de qué estoy hecho y cuánto valgo realmente. Pero sobre todo, me has motivado a ser mejor cada día.
+                </p>
+
+                <p>
+                    Contigo entendí lo más importante: que necesito estar bien conmigo mismo primero, para poder estar bien para ti y darte la versión que mereces.
+                </p>
+
+                <div class="quote-block">
+                    <p class="mb-0 text-yellow-100">
+                        Gracias por enseñarme que, a pesar de que el camino sea largo y difícil, siempre hay una luz al final del túnel. <span class="font-semibold text-white">Gracias por ser esa luz.</span>
+                    </p>
+                </div>
+            </div>
+
+            <footer class="mt-12 text-right border-t border-gray-600/30 pt-6">
+                <p class="font-dancing text-2xl text-blue-100">
+                    Con amor,<br>
+                    <span class="heart-beat">❤️</span> David
+                </p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script>
+        // --- LÓGICA DE CONTRASEÑA ---
+        function checkPassword() {
+            const input = document.getElementById('password-input');
+            const errorMsg = document.getElementById('error-message');
+            const loginScreen = document.getElementById('login-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            if (input.value === "2235") {
+                // Éxito
+                errorMsg.classList.add('hidden');
+                
+                // Desvanecer login
+                loginScreen.style.transition = "opacity 0.5s ease";
+                loginScreen.style.opacity = "0";
+                
+                setTimeout(() => {
+                    loginScreen.classList.add('hidden');
+                    // Mostrar carta
+                    mainContent.classList.remove('hidden');
+                    // Forzar reflow
+                    void mainContent.offsetWidth; 
+                    mainContent.classList.remove('opacity-0');
+                    mainContent.classList.add('card-enter');
+                }, 500);
+
+            } else {
+                // Error
+                errorMsg.classList.remove('hidden');
+                input.value = "";
+                input.focus();
+            }
+        }
+
+        // Permitir Enter para enviar
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // --- VISUALES DE FONDO ---
+        // Generar Estrellas
+        const starsContainer = document.getElementById('stars-container');
+        const starCount = 200; 
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const size = Math.random() * 2;
+            const duration = Math.random() * 3 + 2;
+            const opacity = Math.random();
+            
+            star.style.left = `${x}%`;
+            star.style.top = `${y}%`;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${duration}s`);
+            star.style.setProperty('--opacity', opacity);
+            
+            starsContainer.appendChild(star);
+        }
+    </script>
 </body>
 </html>
